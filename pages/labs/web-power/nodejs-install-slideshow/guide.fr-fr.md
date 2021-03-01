@@ -26,7 +26,7 @@ order: 5
  }
 </style>
 
-**Dernière mise à jour le 03/02/2021**
+**Dernière mise à jour le 01/03/2021**
 
 ## Objectif
 
@@ -75,15 +75,15 @@ ln -fs server.js index.js
 Sortie du terminal:
 
 
-<pre class="console"><code> ~ $ rm -rf www
+<pre class="console"><code> ~ $ rm -rf ${HOME}/www
 
-~ $ git clone https://github.com/nafeu/realtime-slides-tut.git www
+~ $ git clone https://github.com/nafeu/realtime-slides-tut.git ${HOME}/www
 Clonage dans 'www'...
 remote: Enumerating objects: 91, done.
 remote: Total 91 (delta 0), reused 0 (delta 0), pack-reused 91
 Dépaquetage des objets: 100% (91/91), fait.
 
-~ $ cd www
+~ $ cd ${HOME}/www
  
 ~/www $ npm install --save
 npm WARN realtime-slides-tut@1.0.0 No repository field.
@@ -91,11 +91,11 @@ added 297 packages from 253 contributors and audited 297 packages in 6.689s
 found 18 vulnerabilities (9 low, 3 moderate, 5 high, 1 critical)
   run `npm audit fix` to fix them, or `npm audit` for details
 
-~/www $ ln -fs server.js index.js
+~/www $ ln -fs ${HOME}/www/server.js ${HOME}/www/index.js
 
-~/www $ mkdir -p tmp
+~/www $ mkdir -p ${HOME}/www/tmp
 
-~/www $ touch tmp/restart.txt
+~/www $ touch ${HOME}/www/tmp/restart.txt
 
 </code></pre>
 

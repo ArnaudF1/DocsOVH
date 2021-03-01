@@ -6,7 +6,7 @@ section: Premiers pas
 order: 1
 ---
 
-**Dernière mise à jour le 21/01/2021**
+**Dernière mise à jour le 01/03/2021**
 
 ## Objectif
 
@@ -82,14 +82,27 @@ Allez dans le répertoire `www` et créez un fichier `index.js`:
 
 ```javascript
 const http = require('http');
-const port = 3000;
 const msg = `Hello World from NodeJS ${process.version}\n`;
 const server = http.createServer((req, res) => {
 res.statusCode = 200;
 res.setHeader('Content-Type', 'text/plain');
 res.end(msg);
 });
-server.listen(port);
+server.listen();
+```
+
+Sortie du terminal :
+```bash
+~ $ cat << 'EOF' > ${HOME}/www/index.js
+const http = require('http');
+const msg = `Hello World from NodeJS ${process.version}\n`;
+const server = http.createServer((req, res) => {
+res.statusCode = 200;
+res.setHeader('Content-Type', 'text/plain');
+res.end(msg);
+});
+server.listen();
+EOF
 ```
 
 Procédez à un [redémarrage de votre instance](#restart), votre *Hello World* sera alors en ligne.
@@ -102,7 +115,7 @@ Procédez à un [redémarrage de votre instance](#restart), votre *Hello World* 
 
 Supposons que vous avez la configuration normale pour un hébergement web POWER Python :
 
-- Moteur : Pyhton 3.7
+- Moteur : Python 3.8
 - Point d'entrée : app.py
 - Dossier racine : www
 
@@ -131,9 +144,27 @@ def application(environ, start_response):
     return [output]    
 ```
 
+Sortie du terminal :
+```bash
+~ $ cat << 'EOF' > ${HOME}/www/app.py
+import sys
+ 
+def application(environ, start_response):
+    status = '200 OK'
+    output = '\n'.join(['Hello World!', f"Version : {sys.version}",
+                        f"Executable : {sys.executable}"])
+ 
+    response_headers = [('Content-type', 'text/plain'),
+                        ('Content-Length', str(len(output)))]
+    start_response(status, response_headers)
+ 
+    return [output]
+EOF
+```
+
 Pour appliquer ces modifications, pensez à [redémarrer votre instance](#restart). Votre *Hello World* sera alors en ligne.
 
-![Hello World in Pyton](images/getting-started-07.png){.thumbnail}
+![Hello World in Python](images/getting-started-07.png){.thumbnail}
 
 ### Ruby
 
@@ -141,7 +172,7 @@ Pour appliquer ces modifications, pensez à [redémarrer votre instance](#restar
 
 Supposons que vous avez la configuration normale pour un hébergement web POWER Ruby :
 
-- Moteur : Ruby 2.6
+- Moteur : Ruby 2.7
 - Point d'entrée : config.ru
 - Dossier racine : www
 
@@ -168,6 +199,24 @@ class Application
 end
  
 run Application.new
+```
+
+Sortie du terminal :
+```bash
+~ $ cat << 'EOF' > ${HOME}/www/config.ru
+require 'socket'
+require 'timeout'
+ 
+class Application
+ 
+    def call(env)
+        msg = "Hello World from ruby #{ RUBY_VERSION }p#{ RUBY_PATCHLEVEL }"
+        [200, { "Content-Type" => "text/plain" }, [msg]]
+    end
+end
+ 
+run Application.new
+EOF
 ```
 
 Pour appliquer ces modifications, pensez à [redémarrer votre instance](#restart). Votre *Hello World* sera alors en ligne.
@@ -216,21 +265,30 @@ Les [API OVHcloud](https://api.ovh.com/) actuellement disponibles pour l'offre d
 
 Dossier racine : www
 
-```sh
-~ $ cd www
-~/www $ vi .htaccess
+```
 RewriteCond %{ENV:HTTPS} !on
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 ```
 
+Sortie du terminal :
+```bash
+~ $ cat << 'EOF' > ${HOME}/www/.htaccess
+RewriteCond %{ENV:HTTPS} !on
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+EOF
+```
+
+
 ### Redémarrer votre instance <a name="restart"></a>
+
+Dossier racine : www
 
 Après chaque modification structurante de votre application, il est conseillé de redémarrer votre instance pour visualiser les changements. Pour cela, il vous suffira de saisir la commande suivante :
 
-```sh
-~ $ cd www
-~/www$ mkdir tmp
-~/www$ touch tmp/restart.txt
+Sortie du terminal :
+```bash
+~ $ mkdir -p ${HOME}/www/tmp
+~ $ touch ${HOME}/www/tmp/restart.txt</code></pre>
 ```
 
 > [!primary]

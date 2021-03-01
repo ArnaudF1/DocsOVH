@@ -27,7 +27,7 @@ order: 6
  }
 </style>
 
-**Dernière mise à jour le 03/02/2021**
+**Dernière mise à jour le 01/03/2021**
 
 ## Objectif
 
@@ -84,9 +84,9 @@ RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 Sortie du terminal :
 
-<pre class="console"><code> ~ $ rm -rf www
+<pre class="console"><code> ~ $ rm -rf ${HOME}/www
 
-~ $ npx create-strapi-app www --quickstart --no-run
+~ $ npx create-strapi-app ${HOME}/www --quickstart --no-run
 npx : 91 installé(s) en 6.741s
 Creating a new Strapi application at /home/user/www.
 Creating a quickstart project.
@@ -94,19 +94,19 @@ Creating files.
 Dependencies installed successfully.
 [...]
 
-~ $ cat << 'EOF' > www/index.js
+~ $ cat << 'EOF' > ${HOME}/www/index.js
 const strapi = require('strapi');
  
 strapi(/* {...} */).start();
 EOF
-~ $ cat << 'EOF' > www/.htaccess
+~ $ cat << 'EOF' > ${HOME}/www/.htaccess
 RewriteCond %{ENV:HTTPS} !on
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 EOF
 
-~/www $ mkdir -p tmp
+~ $ mkdir -p ${HOME}/www/tmp
 
-~/www $ touch tmp/restart.txt
+~ $ touch ${HOME}/www/tmp/restart.txt
 
 </code></pre>
 

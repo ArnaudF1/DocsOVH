@@ -26,7 +26,7 @@ order: 1
  }
 </style>
 
-**Last updated 4th February 2021**
+**Last updated 1st March 2021**
 
 ## Objective
 
@@ -105,29 +105,26 @@ Connect via SSH to your POWER web hosting, go to the `www` folder and create an 
 `index.js`
 ```javascript
 const http = require('http');
-const port = 3000;
 const msg = `Hello World from NodeJS ${process.version}\n`;
 const server = http.createServer((req, res) => {
 res.statusCode = 200;
 res.setHeader('Content-Type', 'text/plain');
 res.end(msg);
 });
-server.listen(port);
+server.listen();
 ```
 
-<pre class="console"><code>~ $ vi www/index.js
+Terminal output :
+<pre class="console"><code>~ $ cat << 'EOF' > ${HOME}/www/index.js
 const http = require('http');
-const port = 3000;
 const msg = `Hello World from NodeJS ${process.version}\n`;
 const server = http.createServer((req, res) => {
 res.statusCode = 200;
 res.setHeader('Content-Type', 'text/plain');
 res.end(msg);
 });
-server.listen(port);
-
-~ $ mkdir -p www/tmp
-~ $ touch www/tmp/restart.txt</code></pre>
+server.listen();
+EOF</code></pre>
 
 Then [restart your instance](#restart).
 
@@ -139,7 +136,7 @@ Then [restart your instance](#restart).
 
 Let's suppose you have the default configuration for Python hosting:
 
-- Runtime: Python 3.7   
+- Runtime: Python 3.8
 - Entrypoint: app.py
 - DocumentRoot: www
 
@@ -165,6 +162,22 @@ def application(environ, start_response):
     return [output]    
 ```
 
+Terminal output :
+<pre class="console"><code>~ $ cat << 'EOF' > ${HOME}/www/app.py
+import sys
+
+def application(environ, start_response):
+    status = '200 OK'
+    output = '\n'.join(['Hello World!', f"Version : {sys.version}",
+                        f"Executable : {sys.executable}"])
+
+    response_headers = [('Content-type', 'text/plain'),
+                        ('Content-Length', str(len(output)))]
+    start_response(status, response_headers)
+
+    return [output]
+EOF</code></pre>
+
 Then [restart your instance](#restart).
 
 ![Hello World in Python](images/getting-started-07.png){.thumbnail}
@@ -175,7 +188,7 @@ Then [restart your instance](#restart).
 
 Let's suppose you have the default configuration for Ruby hosting:
 
-- Runtime: Ruby 2.6   
+- Runtime: Ruby 2.7
 - Entrypoint: config.ru
 - DocumentRoot: www
 
@@ -200,6 +213,22 @@ end
  
 run Application.new
 ```
+
+Terminal output :
+<pre class="console"><code>~ $ cat << 'EOF' > ${HOME}/www/config.ru
+require 'socket'
+require 'timeout'
+
+class Application
+
+    def call(env)
+        msg = "Hello World from ruby #{ RUBY_VERSION }p#{ RUBY_PATCHLEVEL }"
+        [200, { "Content-Type" => "text/plain" }, [msg]]
+    end
+end
+
+run Application.new
+EOF</code></pre>
 
 Then [restart your instance](#restart).
 
@@ -243,29 +272,32 @@ The [OVHcloud APIs](https://api.ovh.com/) currently available for POWER hosting 
 
 ### Setting up a redirection from HTTP to HTTPS
 
-You can create an `.htaccess` file in your POWER web hosting root folder (usually `www`) to set up a redirection from HTTP to HTTPS:
+DocumentRoot: www
+
+Connect via SSH to your POWER web hosting, go to the `www` folder and create a `.htaccess` file there to set up a redirection from HTTP to HTTPS:
 
 ```
 RewriteCond %{ENV:HTTPS} !on
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 ```
 
-
-<pre class="console"><code>~ $ cd www
-~/www $ vi .htaccess
+Terminal output :
+<pre class="console"><code>~ $ cat << 'EOF' > ${HOME}/www/.htaccess
 RewriteCond %{ENV:HTTPS} !on
-RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]</code></pre>
+RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+EOF</code></pre>
 
 ### Restart your instance <a name="restart"></a>
+
+DocumentRoot: www
 
 Each time you modify your application, you should tell the server to restart it.
 
 In your document root you should `touch` the file `tmp/restart.txt`.
 
-
-<pre class="console"><code>~ $ cd www
-~/www$ mkdir tmp
-~/www$ touch tmp/restart.txt</code></pre>
+Terminal output :
+<pre class="console"><code>~ $ mkdir -p ${HOME}/www/tmp
+~ $ touch ${HOME}/www/tmp/restart.txt</code></pre>
 
 > [!primary]
 >

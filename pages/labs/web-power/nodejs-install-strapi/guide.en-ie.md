@@ -27,7 +27,7 @@ order: 6
  }
 </style>
 
-**Last updated 4th February 2021**
+**Last updated 1st March 2021**
 
 ## Objective
 
@@ -89,33 +89,31 @@ Then [restart your instance](../getting-started-with-power-web-hosting/#restart)
 
 Terminal output:
 
-<pre class="console"><code> ~ $ rm -rf www
+<pre class="console"><code> ~ $ rm -rf ${HOME}/www
 
-~ $ npx create-strapi-app www --quickstart --no-run
-npx: 91 installed in 6.741s
+~ $ npx create-strapi-app ${HOME}/www --quickstart --no-run
+npx : 91 installed in 6.741s
 Creating a new Strapi application at /home/user/www.
 Creating a quickstart project.
 Creating files.
 Dependencies installed successfully.
 [...]
 
-~ $ cat << 'EOF' > www/index.js
+~ $ cat << 'EOF' > ${HOME}/www/index.js
 const strapi = require('strapi');
- 
+
 strapi(/* {...} */).start();
 EOF
-~ $ cat << 'EOF' > www/.htaccess
+~ $ cat << 'EOF' > ${HOME}/www/.htaccess
 RewriteCond %{ENV:HTTPS} !on
 RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 EOF
 
-~/www $ mkdir -p tmp
+~ $ mkdir -p ${HOME}/www/tmp
 
-~/www $ touch tmp/restart.txt
+~ $ touch ${HOME}/www/tmp/restart.txt
 
 </code></pre>
-
-
 
 ## Go further
 
